@@ -20,6 +20,9 @@ public class Model {
 	private Map<Integer, Director> idMap;
 	private Graph<Director, DefaultWeightedEdge> grafo;
 	
+	private List<Director> migliore;
+	private int totACBest;
+	
 	public Model() {
 		this.dao = new ImdbDAO();
 	}
@@ -60,4 +63,54 @@ public class Model {
 		Collections.sort(vicini);
 		return vicini;
 	}
+	
+	public List<Director> getRegistiAffini(Director d, int c) {
+		this.migliore = new ArrayList<Director>();
+		this.totACBest = 0;
+		int totAttoriCondivisi = 0;
+		
+		List<Director> parziale = new ArrayList<Director>();
+		parziale.add(d);
+		
+		this.cerca(parziale, c, 1,totAttoriCondivisi);
+		
+		return migliore;
+	}
+
+	private void cerca(List<Director> parziale, int c, int L, int totAttoriCondivisi) {
+		//casi terminali
+		if(totAttoriCondivisi > c) {
+			//soglia superata
+			return;
+		}
+		else {
+			//sequenza accettabile
+			if(parziale.size() > this.migliore.size()) {
+				this.migliore = new ArrayList<Director>(parziale);
+				this.totACBest = totAttoriCondivisi;
+			}
+		}
+		
+		if(L == this.grafo.vertexSet().size())
+			return;
+		
+		for(Adiacenza a : this.getAdiacenti(parziale.get(parziale.size()-1))) {
+			if(a.getPeso() <= c && !parziale.contains(a.getD2())) {
+				parziale.add(a.getD2());
+				totAttoriCondivisi += a.getPeso();
+				
+				this.cerca(parziale, c, L+1, totAttoriCondivisi);
+				
+				//backtracking
+				parziale.remove(parziale.size()-1);
+				totAttoriCondivisi -= a.getPeso();
+			}
+		}
+		
+	}
+
+	public int getTotAttoriCondivisi() {
+		return totACBest;
+	}
+	
 }

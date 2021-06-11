@@ -94,7 +94,35 @@ public class FXMLController {
 
     @FXML
     void doRicorsione(ActionEvent event) {
-
+    	this.txtResult.clear();
+    	
+    	if(this.model.getGrafo() == null) {
+    		this.txtResult.setText("Creare il grafo!");
+    		return;
+    	}
+    	Director d = this.boxRegista.getValue();
+    	if(d == null) {
+    		this.txtResult.setText("Scegliere un regista!");
+    		return;
+    	}
+    	String cS = this.txtAttoriCondivisi.getText();
+    	try {
+    		int c = Integer.parseInt(cS);
+    		if(c <= 0) {
+    			this.txtResult.setText("C deve essere maggiore di zero!");
+        		return;
+    		}
+    		List<Director> percorso = this.model.getRegistiAffini(d, c);
+    		this.txtResult.appendText("PERCORSO:\n");
+    		for(Director affine : percorso) {
+    			this.txtResult.appendText(affine + "\n");
+    		}
+    		this.txtResult.appendText("TOTALE ATTORI CONDIVISI: " + this.model.getTotAttoriCondivisi());
+    	}
+    	catch(NumberFormatException nfe) {
+    		this.txtResult.setText("c deve essere un intero!");
+    		return;
+    	}
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
