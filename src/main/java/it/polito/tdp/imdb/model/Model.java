@@ -103,7 +103,6 @@ public class Model {
 				
 				//backtracking
 				parziale.remove(parziale.size()-1);
-				totAttoriCondivisi -= a.getPeso();
 			}
 		}
 		

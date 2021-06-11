@@ -113,7 +113,7 @@ public class FXMLController {
         		return;
     		}
     		List<Director> percorso = this.model.getRegistiAffini(d, c);
-    		this.txtResult.appendText("PERCORSO:\n");
+    		this.txtResult.appendText("REGISTI AFFINI:\n");
     		for(Director affine : percorso) {
     			this.txtResult.appendText(affine + "\n");
     		}
