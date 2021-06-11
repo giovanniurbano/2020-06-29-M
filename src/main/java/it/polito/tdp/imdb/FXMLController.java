@@ -48,7 +48,16 @@ public class FXMLController {
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
-
+    	this.txtResult.clear();
+    	
+    	Integer anno = this.boxAnno.getValue();
+    	if(anno == null) {
+    		this.txtResult.setText("Scegliere un anno!");
+    		return;
+    	}
+    	
+    	String msg = this.model.creaGrafo(anno);
+    	this.txtResult.appendText(msg);
     }
 
     @FXML
